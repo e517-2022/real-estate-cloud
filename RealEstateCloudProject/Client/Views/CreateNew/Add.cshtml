@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "View";
+}
+
+<style>
+    h1{
+        font-family: 'Maiandra GD';
+        color: black;
+       
+        font-size: 60px;
+    }
+
+    p{
+        font-family: 'Maiandra GD';
+        color: darkred;
+
+        font-size: 40px;
+    }
+
+    
+   
+    
+
+    
+
+    input {
+        height: 30px;
+        text-align: center;
+        vertical-align: middle;
+        font-family: 'Times New Roman';
+        font-size: medium;
+    }
+
+        input.check {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+ 
+
+    input[type=radio] {
+        border: 0px;
+        width: 15%;
+        height: 2em;
+    }
+
+    input.submit {
+        color: #1cc49d;
+        background-color: #1b2f31;
+        border-radius: 50px;
+        justify-content: center;
+        align-items: center;
+        height: 3em;
+        width: 8em;
+        font-size: large;
+        font-weight: 600;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+   
+
+</style>
+
+<form action="~/CreateNew/Add" method="post">
+    <div style="float:right; margin-right:-170px; text-align:center">
+        <div class="grid-container" style="width: 50%">
+        <div class="grid-item" style="grid-column:1; grid-row:1">
+            Estate name:
+            <input type="text" required name="Name" />
+        </div>
+        <div class="grid-item" style="grid-column:1; grid-row:2">
+            Place:
+            <input type="text" required name="Place" />
+        </div>
+        <div class="grid-item" style="grid-column:1; grid-row:3">
+            Renting Price:
+            <input type="number" required name="RentingPrice" />
+        </div>
+       <hr />
+        <div class="grid-item" style="grid-column:1; grid-row:5; background-color:white">
+            <button type="submit" class="submit" value="Submit" />
+        </div>
+
+    </div>
+</div>
+</form>
+
+
