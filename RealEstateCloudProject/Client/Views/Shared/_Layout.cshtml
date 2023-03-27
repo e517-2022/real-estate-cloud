@@ -5,6 +5,7 @@
     body {
         background-image: url("https://wallpapercave.com/wp/wp8179173.jpg");
         background-size: 2200px;
+   
     }
 
     table {
@@ -30,18 +31,31 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color:darkred; font-size:larger; font-weight:bold">REAL ESTATE AGENCY</a>
+            <div class="container-fluid" >
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="font-size:larger; font-weight:bold; font-family:Gabriola; color:#c58d60; background-color:black; opacity:.4" >&nbsp; REAL ESTATE AGENCY &nbsp; </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation" style="background-color: black; opacity:.4">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CreateNew" asp-action="Add" style="color:darkred; font-size:larger; font-weight:bold">Add new real estate </a>
+                        <li class="nav-item" >
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CreateNew" asp-action="Add" style="font-size:larger; opacity:.8; font-weight:bold; background-color:#c58d60; font-family:Gabriola">Add new real estate </a>
+                            
                         </li>
+                        &nbsp;
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ShowEstates" asp-action="Show" style="color:black; opacity:.8; background-color:#c58d60;  font-size:larger; font-weight:bold; font-family:Gabriola">Show all estates </a>
+                        </li>
+                        &nbsp;
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="AddReservation" asp-action="Add" style="color:black; opacity:.8; background-color:#c58d60;  font-size:larger; font-weight:bold; font-family:Gabriola">Make a reservation </a>
+                        </li>
+                       @* &nbsp;
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="History" asp-action="ShowAll" style="color:black; background-color:#c58d60;  font-size:larger; font-weight:bold; font-family:Gabriola">Reservations history</a>
+                        </li>*@
                     </ul>
                 </div>
             </div>

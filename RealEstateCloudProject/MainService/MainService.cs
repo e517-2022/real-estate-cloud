@@ -19,23 +19,121 @@ namespace MainService
     internal sealed class MainService : StatefulService,IMainService
     {
         IReliableDictionary<int, RealEstate> realEstateDict;
+        IReliableDictionary<int, Reservation> reservationDict;
         public MainService(StatefulServiceContext context)
             : base(context)
         { }
 
         public async Task<bool> AddNewEstate(RealEstate realEstate)
         {
-            Random r=new Random();
+            
             var stateManager = this.StateManager;
             bool result = true;
 
-            realEstate.Id = r.Next(0, 10);
+            realEstate.Id =Guid.NewGuid().GetHashCode();
 
 
             realEstateDict = await stateManager.GetOrAddAsync<IReliableDictionary<int, RealEstate>>("RealEstateData");
             using (var  t = stateManager.CreateTransaction())
             {
                 result = await realEstateDict.TryAddAsync(t, realEstate.Id, realEstate);
+                await t.CommitAsync();
+            }
+
+            if (result == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async Task<List<RealEstate>> GetEstates()
+        {
+
+            List<RealEstate> estates = new List<RealEstate>();
+
+           
+
+                realEstateDict = await this.StateManager.GetOrAddAsync<IReliableDictionary<int, RealEstate>>("RealEstateData");
+                using (var tx = this.StateManager.CreateTransaction())
+                {
+                    var enumerator = (await realEstateDict.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
+                    while (await enumerator.MoveNextAsync(new System.Threading.CancellationToken()))
+                    {
+                        estates.Add(enumerator.Current.Value);
+                    }
+                }
+
+                return estates;
+               
+            
+
+        }
+
+        public async Task<List<Reservation>> GetReservations()
+        {
+
+            List<Reservation> res = new List<Reservation>();
+
+
+
+            reservationDict = await this.StateManager.GetOrAddAsync<IReliableDictionary<int, Reservation>>("ReservationData");
+            using (var tx = this.StateManager.CreateTransaction())
+            {
+                var enumerator = (await reservationDict.CreateEnumerableAsync(tx)).GetAsyncEnumerator();
+                while (await enumerator.MoveNextAsync(new System.Threading.CancellationToken()))
+                {
+                    res.Add(enumerator.Current.Value);
+                }
+            }
+
+            return res;
+
+
+
+        }
+
+        public async Task<bool> AddNewReservation(Reservation reservation)
+        {
+
+            var stateManager = this.StateManager;
+            reservation.Id = Guid.NewGuid().GetHashCode();
+            bool result = true;
+
+            List<RealEstate> estates =await GetEstates();
+            List<Reservation> reservations = await GetReservations();
+
+            if(reservation.DateTo==null || reservation.DateFrom == null || DateTime.Parse(reservation.DateFrom)>DateTime.Parse(reservation.DateTo) || DateTime.Parse(reservation.DateFrom)<DateTime.Now)
+            {
+                return false;
+            }
+
+            if (reservations != null)
+            {
+                foreach(Reservation r in reservations)
+                {
+                    if (r.EstateId == reservation.EstateId)
+                    {
+                        if(DateTime.Parse(r.DateFrom)<= DateTime.Parse(reservation.DateFrom) && DateTime.Parse(r.DateTo)>= DateTime.Parse(reservation.DateFrom))
+                        {
+                            return false;
+                        }
+                    }
+                    else if(DateTime.Parse(r.DateFrom)<= DateTime.Parse(reservation.DateTo) && DateTime.Parse(r.DateTo)>= DateTime.Parse(reservation.DateTo))
+                    {
+                        return false;
+                    }
+                } 
+              
+            }
+
+
+
+            reservationDict = await stateManager.GetOrAddAsync<IReliableDictionary<int, Reservation>>("ReservationData");
+            using (var t = stateManager.CreateTransaction())
+            {
+                result = await reservationDict.TryAddAsync(t, reservation.Id, reservation);
                 await t.CommitAsync();
             }
 

@@ -1,22 +1,27 @@
 ﻿using Common.Interfaces;
 using Common.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 using System.Fabric;
 
 namespace Client.Controllers
 {
-    public class CreateNewController : Controller
+    public class ShowEstatesController : Controller
     {
-        public IActionResult Add()
+        
+        public IActionResult Index()
         {
             return View();
         }
 
-        [HttpPost]
-        [Route("/CreateNew/Add")]
-        public async Task<IActionResult> AddNewEstate(RealEstate realEstate)
+        [HttpGet]
+        [Route("/ShowEstates/Show")]
+        public async Task<IActionResult> Show()
         {
+            
+            List<RealEstate> estates = new List<RealEstate>();
+
             try
             {
                 bool result = true;
@@ -31,21 +36,23 @@ namespace Client.Controllers
                     new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(index % partitionsNumber)
                     );
 
-                    result = await proxy.AddNewEstate(realEstate);
+                    estates = await proxy.GetEstates();
 
                     index++;
                 }
 
+                
+                ViewBag.Estates = estates; 
+                return View();
 
-                return RedirectToAction("Show", "ShowEstates");
+
+
             }
             catch
             {
-                ViewData["Error"] = "Real estate adding failed! Check your input.";
-                return View("Add");
+                ViewData["Error"] = "Failed";
+                return View();
             }
-
         }
-
     }
 }

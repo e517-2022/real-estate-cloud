@@ -11,5 +11,8 @@ namespace Common.Interfaces
     public interface IMainService : IService
     {
         Task<bool> AddNewEstate(RealEstate realEstate);
+        Task<List<RealEstate>> GetEstates();
+
+        Task<bool> AddNewReservation(Reservation reservation);
     }
 }

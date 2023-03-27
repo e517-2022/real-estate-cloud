@@ -18,6 +18,8 @@ namespace Common.Models
         [DataMember]
         public int RentingPrice { get; set; }
 
+        
+
         public RealEstate(int id, string name, string place, int rentingPrice)
         {
             Id = 0;

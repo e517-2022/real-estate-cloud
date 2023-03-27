@@ -4,88 +4,86 @@
 }
 
 <style>
-    h1{
-        font-family: 'Maiandra GD';
-        color: black;
-       
-        font-size: 60px;
-    }
-
-    p{
-        font-family: 'Maiandra GD';
-        color: darkred;
-
-        font-size: 40px;
-    }
-
-    
    
-    
-
-    
-
-    input {
-        height: 30px;
+        h1 {
+        font-family: Gabriola;
+        font-size:x-large;
         text-align: center;
         vertical-align: middle;
-        font-family: 'Times New Roman';
-        font-size: medium;
+        font-size: 50px;
+        color:black;
+        font-weight:bold;
+        background-color:#c58d60;
+        opacity:.4;
     }
-
-        input.check {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
- 
-
-    input[type=radio] {
-        border: 0px;
-        width: 15%;
-        height: 2em;
-    }
-
-    input.submit {
-        color: #1cc49d;
-        background-color: #1b2f31;
-        border-radius: 50px;
-        justify-content: center;
-        align-items: center;
-        height: 3em;
-        width: 8em;
-        font-size: large;
-        font-weight: 600;
-        margin-left: auto;
-        margin-right: auto;
+    h3 {
+        font-family: Gabriola;
+        font-size:large;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 50px;
+        color:red;
+        font-weight:bold;
     }
 
 
+    
+    div.grid-item {
+        font-family:Gabriola;
+        font-size: 30px;
+        text-align: center;
+        display: inline-grid;
+        border-style: solid;
+        margin: 1px;
+        background-color:white;
+        color:black;
+    }
+
+    div.grid-item2 {
+        font-family:Gabriola;
+        font-size: 30px;
+        text-align: center;
+        display: inline-grid;
+        border-style: solid;
+        margin: 1px;
+        background-color:white;
+        color:black;
+        
+        outline-color:dimgray;
+    }
    
 
 </style>
 
+
+<h1>Add new estate</h1>
+<hr />
+<h3>@ViewData["Error"] </h3>
+
 <form action="~/CreateNew/Add" method="post">
-    <div style="float:right; margin-right:-170px; text-align:center">
-        <div class="grid-container" style="width: 50%">
-        <div class="grid-item" style="grid-column:1; grid-row:1">
+    <div class="grid-item" style="float:right; margin-right:-170px; text-align:center">
+        
+        <div class="grid-item2" style="grid-column:1; grid-row:1">
             Estate name:
             <input type="text" required name="Name" />
         </div>
-        <div class="grid-item" style="grid-column:1; grid-row:2">
+        
+        <div class="grid-item2" style="grid-column:1; grid-row:2">
             Place:
             <input type="text" required name="Place" />
         </div>
-        <div class="grid-item" style="grid-column:1; grid-row:3">
+        
+        <div class="grid-item2" style="grid-column:1; grid-row:3">
             Renting Price:
             <input type="number" required name="RentingPrice" />
         </div>
-       <hr />
+        <hr />
         <div class="grid-item" style="grid-column:1; grid-row:5; background-color:white">
-            <button type="submit" class="submit" value="Submit" />
+            <input type="submit" class="submit" value="RESERVE" style="background-color:#c58d60"/>
         </div>
 
     </div>
-</div>
+
 </form>
 
 

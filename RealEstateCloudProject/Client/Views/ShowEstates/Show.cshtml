@@ -1,0 +1,124 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+
+<style>
+
+
+
+
+    h1 {
+        font-family: Gabriola;
+        font-size:x-large;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 50px;
+        color:black;
+        font-weight:bold;
+        background-color:#c58d60;
+        opacity:.4;
+    }
+
+     h3 {
+        font-family: Gabriola;
+        font-size:large;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 50px;
+        color:red;
+        font-weight:bold;
+    }
+
+
+
+    div.grid-container {
+      
+        display: grid;
+        padding: 10px;
+        border-style: solid;
+        margin: 10px;
+        width: auto;
+        margin-left: auto;
+        margin-right: auto;
+        background-color:white;
+        outline: 1px;
+    }
+
+    div.grid-item {
+        font-family:Gabriola;
+        font-size: 30px;
+        text-align: center;
+        display: inline-grid;
+        border-style: solid;
+        margin: 1px;
+        background-color:#c58d60;
+        color:black;
+    }
+
+    div.grid-item2 {
+        font-family:Gabriola;
+        font-size: 30px;
+        text-align: center;
+        display: inline-grid;
+        border-style: solid;
+        margin: 1px;
+        background-color:white;
+        color:black;
+        outline-color:#c58d60;
+    }
+
+</style>
+
+
+<h1>REAL ESTATES</h1>
+<hr />
+<h3>@ViewData["Error"] </h3>
+
+
+@using Common
+@{
+    
+
+   
+    <div class="grid-container">
+     @{
+       
+        <div class="grid-item" style="grid-column:1; grid-row:1">
+            Name
+        </div>
+        <div class="grid-item" style="grid-column:2; grid-row:1">
+            Place
+        </div>
+        <div class="grid-item" style="grid-column:3; grid-row:1">
+            Renting Price
+        </div>
+                    
+
+                        
+
+        foreach (var estate in ViewBag.Estates)
+        {
+                           
+            <div class="grid-item2" style="grid-column:1">
+                @estate.Name
+            </div>
+            <div class="grid-item2" style="grid-column:2">
+                @estate.Place
+            </div>
+            <div class="grid-item2" style="grid-column:3">
+                @estate.RentingPrice
+            </div>
+                      
+        
+                
+                            
+        }
+                    
+     }
+                                                    
+
+    </div>
+}
