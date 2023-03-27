@@ -7,7 +7,7 @@ using System.Fabric;
 
 namespace Client.Controllers
 {
-    public class ShowEstatesController : Controller
+    public class EstateController : Controller
     {
         
         public IActionResult Index()
@@ -16,7 +16,7 @@ namespace Client.Controllers
         }
 
         [HttpGet]
-        [Route("/ShowEstates/Show")]
+        [Route("/Estate/Show")]
         public async Task<IActionResult> Show()
         {
             

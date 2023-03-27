@@ -37,7 +37,7 @@ namespace Client.Controllers
                 }
 
 
-                return RedirectToAction("Show", "ShowEstates");
+                return RedirectToAction("Show", "Estate");
             }
             catch
             {

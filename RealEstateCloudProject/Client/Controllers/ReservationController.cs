@@ -6,14 +6,14 @@ using System.Fabric;
 
 namespace Client.Controllers
 {
-    public class AddReservationController : Controller
+    public class ReservationController : Controller
     {
 
         List<RealEstate> estates = new List<RealEstate>();
         
 
         [HttpGet]
-        [Route("/AddReservation/Add")]
+        [Route("/Reservation/Add")]
         public async Task<IActionResult> Add()
         {
 
@@ -53,7 +53,7 @@ namespace Client.Controllers
         }
 
         [HttpPost]
-        [Route("/AddReservation/AddReservation")]
+        [Route("/Reservation/AddReservation")]
         public async Task<IActionResult> AddReservation(Reservation reservation)
         {
             try
@@ -103,12 +103,52 @@ namespace Client.Controllers
 
                 
 
-                return RedirectToAction("Add");
+                return RedirectToAction("ShowAll");
             }
             catch
             {
                 ViewData["Error"] = "Please check your dates! This estate may be already reserved!";
                 return View("Add");
+            }
+        }
+
+        [HttpGet]
+        [Route("/Reservation/ShowAll")]
+        public async Task<IActionResult> ShowAll()
+        {
+
+            List<Reservation> reservations = new List<Reservation>();
+
+            try
+            {
+                bool result = true;
+                FabricClient fabricClient = new System.Fabric.FabricClient();
+                int partitionsNumber = (await fabricClient.QueryManager.GetPartitionListAsync(new Uri("fabric:/RealEstateCloudProject/MainService"))).Count;
+                int index = 0;
+
+                for (int i = 0; i < partitionsNumber; i++)
+                {
+                    var proxy = ServiceProxy.Create<IMainService>(
+                    new Uri("fabric:/RealEstateCloudProject/MainService"),
+                    new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(index % partitionsNumber)
+                    );
+
+                    reservations = await proxy.GetReservations();
+
+                    index++;
+                }
+
+
+                ViewBag.Reservations = reservations;
+                return View();
+
+
+
+            }
+            catch
+            {
+                ViewData["Error"] = "Failed";
+                return View();
             }
         }
     }

@@ -14,5 +14,6 @@ namespace Common.Interfaces
         Task<List<RealEstate>> GetEstates();
 
         Task<bool> AddNewReservation(Reservation reservation);
+        Task<List<Reservation>> GetReservations();
     }
 }

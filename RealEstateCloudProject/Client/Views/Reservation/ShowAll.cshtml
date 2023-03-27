@@ -21,15 +21,14 @@
         background-color:#c58d60;
         opacity:.4;
     }
-    h3 {
+
+     h3 {
         font-family: Gabriola;
-        background-color:darkred;
-        opacity: .4;
-        font-size: 20px;
+        font-size:large;
         text-align: center;
         vertical-align: middle;
-        
-        color:white;
+        font-size: 50px;
+        color:red;
         font-weight:bold;
     }
 
@@ -74,7 +73,7 @@
 </style>
 
 
-<h1>REAL ESTATES</h1>
+<h1>Reservations</h1>
 <hr />
 <h3>@ViewData["Error"] </h3>
 
@@ -85,51 +84,49 @@
 
    
     <div class="grid-container">
-
      @{
-      
+       
         <div class="grid-item" style="grid-column:1; grid-row:1">
-            Name
+            Name:
         </div>
         <div class="grid-item" style="grid-column:2; grid-row:1">
-            Place
+            Place:
         </div>
         <div class="grid-item" style="grid-column:3; grid-row:1">
-            Renting Price
+            Renting Price:
+        </div>
+
+         <div class="grid-item" style="grid-column:4; grid-row:1">
+            From:
+        </div>
+         <div class="grid-item" style="grid-column:5; grid-row:1">
+            To:
         </div>
                     
 
                         
 
-        foreach (var estate in ViewBag.Estates)
+        foreach (var res in ViewBag.Reservations)
         {
-            //<div class="grid-item2" style="grid-column:1">
-            //    @estate.Id
-            //</div>
+                           
             <div class="grid-item2" style="grid-column:1">
-                @estate.Name
+                @res.EstateName
             </div>
             <div class="grid-item2" style="grid-column:2">
-                @estate.Place
+                @res.EstatePlace
             </div>
             <div class="grid-item2" style="grid-column:3">
-                @estate.RentingPrice
+                @res.EstateRentingPrice
             </div>
 
             <div class="grid-item2" style="grid-column:4">
-                <form action="~/AddReservation/AddReservation" method="post">
-                    <input type="hidden" value="@estate.Id" name="EstateId" />
-                    <input type="hidden" value="@estate.Name" name="EstateName" />
-                    <input type="hidden" value="@estate.Place" name="EstatePlace" />
-                    <input type="hidden" value="@estate.RentingPrice" name="EstateRentingPrice" />
-                        From: &nbsp;
-                    <input type="date" name="DateFrom" /> &nbsp;
-                        To: &nbsp;
-                    <input type="date" name="DateTo" />
-                    &nbsp;
-                    <input type="submit" class="submit" value="RESERVE" style="background-color:#c58d60"/>
-                </form>
+                @res.DateFrom
             </div>
+
+             <div class="grid-item2" style="grid-column:5">
+                @res.DateTo
+            </div>
+            
                       
         
                 
@@ -137,7 +134,7 @@
         }
                     
      }
-                                                                            
+                                                    
 
     </div>
 }
