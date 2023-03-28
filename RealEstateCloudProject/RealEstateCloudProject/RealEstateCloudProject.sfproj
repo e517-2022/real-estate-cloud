@@ -39,6 +39,7 @@
     <ProjectReference Include="..\Client\Client.csproj">
       <ServiceLaunchUrl>http://localhost:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>
+    <ProjectReference Include="..\EmailService\EmailService.csproj" />
     <ProjectReference Include="..\MainService\MainService.csproj" />
     <ProjectReference Include="..\PubSub\PubSub.csproj" />
   </ItemGroup>
