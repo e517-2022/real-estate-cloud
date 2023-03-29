@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\": {},
           "C:\\Program Files\\Microsoft SDKs\\Service Fabric\\packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -48,6 +49,10 @@
             "Microsoft.ServiceFabric.Services.Remoting": {
               "target": "Package",
               "version": "[6.1.1583, )"
+            },
+            "WindowsAzure.Storage": {
+              "target": "Package",
+              "version": "[8.7.0, )"
             }
           },
           "imports": [
@@ -91,6 +96,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\Microsoft SDKs\\Azure\\.NET SDK\\v2.9\\": {},
           "C:\\Program Files\\Microsoft SDKs\\Service Fabric\\packages": {},
           "https://api.nuget.org/v3/index.json": {}
         },

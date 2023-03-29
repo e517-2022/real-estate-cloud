@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Interfaces;
 using Common.Models;
+using Common.Tables;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
@@ -20,6 +21,7 @@ namespace MainService
     {
         IReliableDictionary<int, RealEstate> realEstateDict;
         IReliableDictionary<int, Reservation> reservationDict;
+        TableHelper tableHelper= new TableHelper();
         public MainService(StatefulServiceContext context)
             : base(context)
         { }
@@ -128,12 +130,15 @@ namespace MainService
               
             }
 
+          
+
 
 
             reservationDict = await stateManager.GetOrAddAsync<IReliableDictionary<int, Reservation>>("ReservationData");
             using (var t = stateManager.CreateTransaction())
             {
                 result = await reservationDict.TryAddAsync(t, reservation.Id, reservation);
+                tableHelper.AddReservation(reservation);
                 await t.CommitAsync();
             }
 
@@ -171,6 +176,7 @@ namespace MainService
             //       or remove this RunAsync override if it's not needed in your service.
 
             var myDictionary = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, long>>("myDictionary");
+           
 
             while (true)
             {
