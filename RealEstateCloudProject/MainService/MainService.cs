@@ -179,7 +179,7 @@ namespace MainService
             using (var t = stateManager.CreateTransaction())
             {
                 result = await reservationDict.TryAddAsync(t, reservation.Id, reservation);
-                tableHelper.AddReservation(reservation);
+                await tableHelper.AddReservation(reservation);
                 await t.CommitAsync();
             }
 
