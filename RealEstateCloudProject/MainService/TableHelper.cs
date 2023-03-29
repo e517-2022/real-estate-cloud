@@ -45,20 +45,21 @@ namespace MainService
 
         public async Task<List<Reservation>> GetReservations()
         {
-            Reservation temp = new Reservation();
+            //Reservation temp = new Reservation();
             List<Reservation> res = new List<Reservation>();
             var tableQuery = new TableQuery<ReservationEntity>();
             var reservations = await _table.ExecuteQuerySegmentedAsync(tableQuery, null);
 
             foreach(ReservationEntity r in reservations)
             {
-                temp.Id = Int32.Parse(r.ID);
-                temp.EstateId = r.EstateId;
-                temp.EstateName = r.EstateName;
-                temp.EstatePlace = r.EstatePlace;
-                temp.EstateRentingPrice = r.EstateRentingPrice;
-                temp.DateFrom = r.DateFrom;
-                temp.DateTo = r.DateTo;
+                var temp= new Reservation(Int32.Parse(r.ID),r.EstateId,r.EstateName,r.EstatePlace,r.EstateRentingPrice,r.DateFrom,r.DateTo);
+                //temp.Id = Int32.Parse(r.ID);
+                //temp.EstateId = r.EstateId;
+                //temp.EstateName = r.EstateName;
+                //temp.EstatePlace = r.EstatePlace;
+                //temp.EstateRentingPrice = r.EstateRentingPrice;
+                //temp.DateFrom = r.DateFrom;
+                //temp.DateTo = r.DateTo;
 
                 res.Add(temp);
             }

@@ -26,17 +26,17 @@ namespace Client.Controllers
             {
                 bool result = true;
                 FabricClient fabricClient = new System.Fabric.FabricClient();
-                int partitionsNumber = (await fabricClient.QueryManager.GetPartitionListAsync(new Uri("fabric:/RealEstateCloudProject/MainService"))).Count;
+                int partitionsNumber = (await fabricClient.QueryManager.GetPartitionListAsync(new Uri("fabric:/RealEstateCloudProject/PubSub"))).Count;
                 int index = 0;
 
                 for (int i = 0; i < partitionsNumber; i++)
                 {
-                    var proxy = ServiceProxy.Create<IMainService>(
-                    new Uri("fabric:/RealEstateCloudProject/MainService"),
+                    var proxy = ServiceProxy.Create<IPubSub>(
+                    new Uri("fabric:/RealEstateCloudProject/PubSub"),
                     new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(index % partitionsNumber)
                     );
 
-                    estates = await proxy.GetEstates();
+                    estates = await proxy.GetEstatesPS();
 
                     index++;
                 }

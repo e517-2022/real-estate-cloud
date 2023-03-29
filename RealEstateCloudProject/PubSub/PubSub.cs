@@ -4,20 +4,76 @@ using System.Fabric;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Interfaces;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using Common.Models;
 
 namespace PubSub
 {
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class PubSub : StatefulService
+    internal sealed class PubSub : StatefulService,IPubSub
     {
+
+        IReliableDictionary<int, RealEstate> realEstateDict;
+        IReliableDictionary<int, Reservation> reservationDict;
+
         public PubSub(StatefulServiceContext context)
             : base(context)
         { }
+
+        public async Task<bool> NewEstatePublish(List<RealEstate> estates)
+        {
+            var stateManager = this.StateManager;
+
+            try
+            {
+                realEstateDict = await stateManager.GetOrAddAsync<IReliableDictionary<int, RealEstate>>("RealEstateDataPS");
+                using (var t = stateManager.CreateTransaction())
+                {
+                    var enumerator = (await realEstateDict.CreateEnumerableAsync(t)).GetAsyncEnumerator();
+                    while (await enumerator.MoveNextAsync(new System.Threading.CancellationToken()))
+                    {
+                        await realEstateDict.TryRemoveAsync(t, enumerator.Current.Key);
+                    }
+
+                    foreach (RealEstate re in estates)
+                    {
+                        await realEstateDict.TryAddAsync(t, re.Id, re);
+                    }
+                    await t.CommitAsync();
+                }
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<RealEstate>> GetEstatesPS()
+        {
+            var stateManager = this.StateManager;
+            List<RealEstate> estatesList = new List<RealEstate>();
+            realEstateDict = await stateManager.GetOrAddAsync<IReliableDictionary<int, RealEstate>>("RealEstateDataPS");
+
+            using (var t = this.StateManager.CreateTransaction())
+            {
+                var enumerator = (await realEstateDict.CreateEnumerableAsync(t)).GetAsyncEnumerator();
+                while (await enumerator.MoveNextAsync(new System.Threading.CancellationToken()))
+                {
+                    estatesList.Add(enumerator.Current.Value);
+                }
+            }
+            return estatesList;
+
+        }
+
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
@@ -28,7 +84,7 @@ namespace PubSub
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            return new ServiceReplicaListener[0];
+            return this.CreateServiceRemotingReplicaListeners();
         }
 
         /// <summary>

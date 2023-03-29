@@ -9,6 +9,7 @@ using Common.Models;
 using Common.Tables;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Client;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 
@@ -47,7 +48,31 @@ namespace MainService
                 return false;
             }
 
-            return true;
+            List<RealEstate> estatesPS = await GetEstates();
+            FabricClient fabricClient = new System.Fabric.FabricClient();
+            int partitionsNumber = (await fabricClient.QueryManager.GetPartitionListAsync(new Uri("fabric:/RealEstateCloudProject/PubSub"))).Count;
+            int index = 0;
+
+            for (int i = 0; i < partitionsNumber; i++)
+            {
+                var proxy = ServiceProxy.Create<IPubSub>(
+                new Uri("fabric:/RealEstateCloudProject/PubSub"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(index % partitionsNumber)
+                );
+
+                bool tempPublish = await proxy.NewEstatePublish(estatesPS);
+
+                if (tempPublish == false)
+                {
+                    return tempPublish;
+                }
+
+                index++;
+            }
+
+            return result;
+
+            
         }
 
         public async Task<List<RealEstate>> GetEstates()
