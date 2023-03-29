@@ -39,19 +39,28 @@ namespace MainService
             CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
             _table = tableClient.GetTableReference("ReservationTable");
             _table.CreateIfNotExistsAsync();
-            TableOperation add = TableOperation.Insert(new ReservationEntity(res.Id.ToString(), res.EstateId.ToString(), res.EstateName, res.EstatePlace, res.EstateRentingPrice, res.DateFrom, res.DateTo));
+            TableOperation add = TableOperation.Insert(new ReservationEntity(res.Id.ToString(), res.EstateId, res.EstateName, res.EstatePlace, res.EstateRentingPrice, res.DateFrom, res.DateTo));
             await _table.ExecuteAsync(add);
         }
 
-        public async Task<List<ReservationEntity>> GetReservations()
+        public async Task<List<Reservation>> GetReservations()
         {
-            List<ReservationEntity> res = new List<ReservationEntity>();
+            Reservation temp = new Reservation();
+            List<Reservation> res = new List<Reservation>();
             var tableQuery = new TableQuery<ReservationEntity>();
             var reservations = await _table.ExecuteQuerySegmentedAsync(tableQuery, null);
 
             foreach(ReservationEntity r in reservations)
             {
-                res.Add(r);
+                temp.Id = Int32.Parse(r.ID);
+                temp.EstateId = r.EstateId;
+                temp.EstateName = r.EstateName;
+                temp.EstatePlace = r.EstatePlace;
+                temp.EstateRentingPrice = r.EstateRentingPrice;
+                temp.DateFrom = r.DateFrom;
+                temp.DateTo = r.DateTo;
+
+                res.Add(temp);
             }
 
             return res;

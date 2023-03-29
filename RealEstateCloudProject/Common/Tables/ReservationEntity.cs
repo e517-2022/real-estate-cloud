@@ -18,6 +18,7 @@ namespace Common.Tables
             PartitionKey = "Reservation";
             ID = id;
             RowKey = ID;
+            EstateId = estateid;
             EstatePlace = place;
             EstateName = name;
             EstateRentingPrice = price;

@@ -96,6 +96,22 @@ namespace MainService
 
         }
 
+        public async Task<List<Reservation>> GetReservationsFromTable()
+        {
+
+            List<Reservation> res = new List<Reservation>();
+
+
+
+            res = await tableHelper.GetReservations();
+
+            return res;
+
+
+
+        }
+
+
         public async Task<bool> AddNewReservation(Reservation reservation)
         {
 

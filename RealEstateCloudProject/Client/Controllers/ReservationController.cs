@@ -133,7 +133,7 @@ namespace Client.Controllers
                     new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(index % partitionsNumber)
                     );
 
-                    reservations = await proxy.GetReservations();
+                    reservations = await proxy.GetReservationsFromTable();
 
                     index++;
                 }
